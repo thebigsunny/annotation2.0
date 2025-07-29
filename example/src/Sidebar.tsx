@@ -7,6 +7,7 @@ interface SidebarProps {
   highlights: Array<CommentedHighlight>;
   resetHighlights: () => void;
   toggleDocument: () => void;
+  currentTitle?: string;
 }
 
 const updateHash = (highlight: Highlight) => {
@@ -19,13 +20,14 @@ const Sidebar = ({
   highlights,
   toggleDocument,
   resetHighlights,
+  currentTitle,
 }: SidebarProps) => {
   return (
     <div className="sidebar" style={{ width: "25vw", maxWidth: "500px" }}>
       {/* Description section */}
       <div className="description" style={{ padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem" }}>
-          react-pdf-highlighter-extended {APP_VERSION}
+          {currentTitle || `react-pdf-highlighter-extended ${APP_VERSION}`}
         </h2>
 
         <p style={{ fontSize: "0.7rem" }}>

@@ -21,6 +21,16 @@ import { CommentedHighlight } from "./types";
 const TEST_HIGHLIGHTS = _testHighlights;
 const PRIMARY_PDF_URL = "https://arxiv.org/pdf/2203.11115";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480";
+const LOCAL_PDF_URL = "/react-pdf-highlighter-extended/example-app/test1.pdf";
+const LOCAL_PDF_URL_2 = "/react-pdf-highlighter-extended/example-app/test2.pdf";
+
+// PDF title mapping
+const PDF_TITLES: Record<string, string> = {
+  [PRIMARY_PDF_URL]: "TypeScript Research Paper",
+  [SECONDARY_PDF_URL]: "JavaScript Research Paper", 
+  [LOCAL_PDF_URL]: "Test Document 1",
+  [LOCAL_PDF_URL_2]: "Test Document 2",
+};
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -47,8 +57,14 @@ const App = () => {
   // Refs for PdfHighlighter utilities
   const highlighterUtilsRef = useRef<PdfHighlighterUtils>();
 
+  // Update document title when URL changes
+  useEffect(() => {
+    const title = PDF_TITLES[url] || "PDF Viewer";
+    document.title = title;
+  }, [url]);
+
   const toggleDocument = () => {
-    const urls = [PRIMARY_PDF_URL, SECONDARY_PDF_URL];
+    const urls = [PRIMARY_PDF_URL, SECONDARY_PDF_URL, LOCAL_PDF_URL, LOCAL_PDF_URL_2];
     currentPdfIndexRef.current = (currentPdfIndexRef.current + 1) % urls.length;
     setUrl(urls[currentPdfIndexRef.current]);
     setHighlights(TEST_HIGHLIGHTS[urls[currentPdfIndexRef.current]] ?? []);
@@ -159,6 +175,7 @@ const App = () => {
         highlights={highlights}
         resetHighlights={resetHighlights}
         toggleDocument={toggleDocument}
+        currentTitle={PDF_TITLES[url]}
       />
       <div
         style={{
